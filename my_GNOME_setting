@@ -1,0 +1,27 @@
+查看选项
+dconf-editor
+
+
+GNOME里，Shift+F1(-F8)将当前窗口移动到相应workspace，Ctrl+F1(-F8)切换workspace
+for x in `seq 1 8`; do echo dconf write /org/gnome/desktop/wm/keybindings/switch-to-workspace-$x \"[\'\<Primary\>F$x\']\"; done |sh
+for x in `seq 1 8`; do echo dconf write /org/gnome/desktop/wm/keybindings/move-to-workspace-$x \"[\'\<Super\>F$x\']\"; done |sh
+
+
+GNOME固定workspace数量为8个
+DISABLE dynamic workspaces in GNOME, set it to 8.
+dconf write /org/gnome/mutter/dynamic-workspaces false
+dconf write /org/gnome/desktop/wm/preferences/num-workspaces 8
+
+
+设置Alt-Tab循环当前workspace的windows
+Alt-Tab iterates windows for current workspace only.
+gsettings set org.gnome.shell.app-switcher current-workspace-only true
+设置Alt-Tab循环所与workspace的windows
+Alt-Tab iterates windows on ALL workspaces.
+gsettings set org.gnome.shell.app-switcher current-workspace-only false
+
+
+设置CAPS键为CTRL，左右SHIFT一起按切换CAPSLOCK（大小写）
+Use CapsLock as Ctrl. Press both SHIFT keys to toggle CAPSLOCK
+setxkbmap -option ctrl:nocaps,shift:both_capslock
+
