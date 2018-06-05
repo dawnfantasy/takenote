@@ -24,4 +24,4 @@ gsettings set org.gnome.shell.app-switcher current-workspace-only false
 设置CAPS键为CTRL，左右SHIFT一起按切换CAPSLOCK（大小写）
 Use CapsLock as Ctrl. Press both SHIFT keys to toggle CAPSLOCK
 setxkbmap -option ctrl:nocaps,shift:both_capslock
-
+参考 https://www.emacswiki.org/emacs/MovingTheCtrlKey
