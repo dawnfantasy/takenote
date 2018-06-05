@@ -1,0 +1,35 @@
+好像Windows 10 企业版（包括 LTSB）和教育版带这个功能，其他版本不确定。
+这个功能就是类似以前的还原卡功能，每次重启后都把系统恢复成原样。但是现在win10自带这个功能了。
+
+1. 激活功能。
+管理员权限Powershell里，运行以下命令，并重启。
+Enable-WindowsOptionalFeature -Online -FeatureName "Client-UnifiedWriteFilter" -All
+
+2. 配置需要保护的分区和目录。
+配置是用uwfmgr.exe命令，所以用管理员运行一下命令即可：
+uwfmgr filter enable
+uwfmgr volume protect c:
+重启电脑即可。
+
+3. 维护模式。
+如果是想要把更新写入磁盘，那需要进入维护模式。
+uwfmgr servicing enable
+重启。
+
+维护完，记得离开维护模式。
+uwfmgr servicing disable
+重启。
+
+4. 例外。
+总有一些情况，你是想允许写入的。如Defender更新，特定一个目录可写入，注册表的某些树等。
+一些常见的例外：
+https://docs.microsoft.com/en-us/windows-hardware/customize/enterprise/uwfexclusions
+每次更改都要重启才生效。
+
+5. 系统是在VHD的。
+如系统是存放在VHD的话，记得要把VHD文件也加入例外！
+
+参考：
+https://deploymentresearch.com/Research/Post/632/Using-the-Unified-Write-Filter-UWF-feature-in-Windows-10
+https://docs.microsoft.com/en-us/windows-hardware/customize/enterprise/unified-write-filter
+https://docs.microsoft.com/en-us/windows-hardware/customize/enterprise/uwfmgrexe
