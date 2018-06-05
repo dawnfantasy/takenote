@@ -1,0 +1,14 @@
+Win7安装是可以自动化的，用的就是Unattend.xml文件。
+什么情况下如何指定这个文件需要了解了才好。
+
+1. 运行setup。
+DVD启动模式，你把文件命名为AutoUnattend.xml，并放在一个U盘根目录，应该就可以了。
+
+2. Imagex apply。
+如果你是用的这个模式，那你可以把unattend.xml文件放入 C:\Windows\System32\Sysprep，命名为Unattend.xml（注意大小写）。
+
+3. 在sysprep时就指定好。
+如果你在sysprep的时候就想指定好，那就sysprep加参数 /unattend:，或者命名为 Unattend.xml（注意大小写）后存放到C:\Windows\System32\Sysprep。
+
+参考：
+https://deploymentresearch.com/Research/Post/322/Back-to-basics-Understanding-Unattend-xml-automation-in-Windows-7
