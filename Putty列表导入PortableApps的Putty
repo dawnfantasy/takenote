@@ -1,0 +1,19 @@
+1. 导出原Putty信息。
+运行命令：
+regedit /e "%USERPROFILE%\Desktop\putty-sessions.reg"  ^
+       HKEY_CURRENT_USER\Software\SimonTatham\PuTTY\Sessions
+桌面会生成一个putty-sessions.reg文件，用记事本打开。^是命令行分割符。
+
+2. 让PortableApps putty生成putty.reg。
+运行PortableApps putty，随便保存一个Session，再关掉程序。
+
+3. 编辑putty.reg文件。
+打开对应 PortableApps\PuTTYPortable\Data\settings 目录，可以看到putty.reg文件，用记事本打开。
+找到RanSeedFile这行，类似这样 "RandSeedFile"="C:\\.....................\\Data\\settings\\PUTTY.RND"，把这行以下的所有信息都删除掉。
+打开前边生成的putty-sessions.reg文件，把第一行“Windows Registry Editor Version 5.00”删除掉，再把剩余所有内容复制粘贴到putty.reg里边，保存退出。
+
+4. 启动PortableApps putty，应该可以看到原来的列表了。
+
+
+参考：
+https://stackoverflow.com/questions/13023920/how-to-export-putty-sessions-list
