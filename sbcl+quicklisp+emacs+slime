@@ -54,6 +54,7 @@ Linux的很简单。
 安装
 aptitude install emacs25 sbcl cl-quicklisp
 
+用户配置(即每个用户都要这么做一次)：
 SBCL配置
 .emacs里添加
 (setq inferior-lisp-program "/usr/bin/sbcl")
@@ -66,7 +67,7 @@ quicklisp配置+安装SLIME
 运行 (quit) 退出。
 
 .emacs里添加
-(load "/Users/XXXX/quicklisp/slime-helper.el")
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 
 安装完成。
 启动emacs，然后C-x C-f   a.lisp，进入lisp slime模式。
