@@ -16,13 +16,14 @@ CL的包管理，装个模块啥的。
 
 4. SLIME
 emacs的插件，用来和sbcl交互的，为了更方便愉快地用emacs写程序。
-
+通过quicklisp安装，其实也可以用apt或者emacs包管理安装，不过还是通过quicklisp安装比较方便。
 
 安装方法 for windows
 1. install emacs (我用25.2.1)
 https://www.gnu.org/software/emacs/download.html
 http://mirror.sergal.org/gnu/emacs/windows/
 emacs-25.3_1-x86_64.zip 解压即可，记得是运行runemacs.exe启动emacs。
+（我试过emacs 26.1也没出问题。）
 
 2. sbcl
 http://www.sbcl.org/platform-table.html
@@ -30,19 +31,17 @@ http://www.sbcl.org/platform-table.html
 .emacs里添加
 (setq inferior-lisp-program "/SBCL/sbcl")
 
-3. quicklisp
-https://beta.quicklisp.org/quicklisp.lisp
-下载文件，然后开一个cmd，切换到相应文件夹，运行 sbcl --load quicklisp.lisp
-看到*号后，开始安装。
-(quicklisp-quickstart:install)  运行这个命令下载所需文件。
-(ql:add-to-init-file)  运行此语句，将quicklisp模块信息添加到.sbclrc，sbcl每次启动就会自动加载了。
-最后运行 (quit) 退出。
+3. quicklisp+SLIME
+下载https://beta.quicklisp.org/quicklisp.lisp，然后开一个cmd，切换到相应文件夹，运行 sbcl --load quicklisp.lisp
+看到提示(quicklisp-quickstart:install)和*号后可以开始安装。
+(quicklisp-quickstart:install) 运行这个命令下载所需文件。
+(ql:add-to-init-file) 运行此语句，将quicklisp模块信息添加到.sbclrc，sbcl每次启动就会自动加载了。
+(ql:quickload "quicklisp-slime-helper") 安装SLIME
+运行 (quit) 退出。
 
-4. slime
-https://github.com/slime/slime/releases
-我是通过emacs安装的，melpa源里提供的。
-M-x list-packages
-找到slime后，输入 i   x 就可以装了。
+.emacs里添加
+(load "/Users/XXXX/quicklisp/slime-helper.el")
+安装时给出的默认路径在Win下是不对的，要手动改。反正你找到那个slime-helper.el，把路径改好就行了。
 
 安装完成。
 启动emacs，然后C-x C-f   a.lisp，进入lisp slime模式。
@@ -51,7 +50,7 @@ M-x list-packages
 
 
 Linux的很简单。
-我用的是ubuntu 18.04。
+我用的是ubuntu 18.04，不过应该通用，自己找到相应包就好。
 安装
 aptitude install emacs25 sbcl cl-quicklisp
 
@@ -59,11 +58,16 @@ SBCL配置
 .emacs里添加
 (setq inferior-lisp-program "/usr/bin/sbcl")
 
-quicklisp配置
-sbcl --load /usr/share/cl-quicklisp/quicklisp.lisp
-看到*号后，开始安装。
-(quicklisp-quickstart:install)  运行这个命令下载所需文件。
-(ql:add-to-init-file)  运行此语句，将quicklisp模块信息添加到.sbclrc，sbcl每次启动就会自动加载了。
-最后运行 (quit) 退出。
+quicklisp配置+安装SLIME
+看到提示(quicklisp-quickstart:install)和*号后可以开始安装。
+(quicklisp-quickstart:install) 运行这个命令下载所需文件。
+(ql:add-to-init-file) 运行此语句，将quicklisp模块信息添加到.sbclrc，sbcl每次启动就会自动加载了。
+(ql:quickload "quicklisp-slime-helper") 安装SLIME
+运行 (quit) 退出。
 
-slime 你可以用emacs装也可以用apt装。
+.emacs里添加
+(load "/Users/XXXX/quicklisp/slime-helper.el")
+
+安装完成。
+启动emacs，然后C-x C-f   a.lisp，进入lisp slime模式。
+然后 M-x slime 就可以看到REPL界面。
