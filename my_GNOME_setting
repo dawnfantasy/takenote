@@ -25,3 +25,6 @@ gsettings set org.gnome.shell.app-switcher current-workspace-only false
 Use CapsLock as Ctrl. Press both SHIFT keys to toggle CAPSLOCK
 setxkbmap -option ctrl:nocaps,shift:both_capslock
 参考 https://www.emacswiki.org/emacs/MovingTheCtrlKey
+
+禁用 Ctrl+Alt+d (emacs快捷键)
+dconf write /org/gnome/desktop/wm/keybindings/show-desktop "['<Super>d']"
