@@ -1,0 +1,24 @@
+https://developers.eos.io/eosio-nodeos/docs/accounts-and-permissions
+
+在一个特定的account（账户）里，可以规定多个permission（权限），默认有owner权限和active权限。owner权限是该账户最高权限，active权限可以用来转账/投票等。
+若要行使某个权限，必须要达到该权限规定的threshold（阈值）才行。怎么达到呢？通过加总key的weight（权重）得到。
+每个权限都会规定（授权）哪个key的weight是多少，不是你随便拿一个key就可以用的，每个被授权的key的weight也不一定一样。
+每一个key对应一个重量weight，行使某个permission就需要达到该权限规定的最低threshold，即通过加总key的weight得到。
+
+钱包wallet：
+key是存放在wallet里的，需要用key就unlock该key后才能使用。
+可以多个wallet。
+
+单签：
+一个account叫bob，拥有两类权限，owner和active。
+owner权限的要求threshold是1，里边有一个key的weight=1，所以用这个key就可以满足，就可以行使owner权限。
+active权限的要求threshold也是1，里边也有一个key正好weight=1，所以用这个key也可以满足要求，行使active权限。
+提交一个transaction，如果是要行使相应permission的动作（如active权限是转账/投票等需要的权限），那就需要用相应的key来签名。
+
+多签：
+比如一个account叫 XX集团。
+现在，xx集团的owner permission需要threshold=2才能行使。这个permission授权了2个账户，bob和stacy。bob和stacy各自账户的weight=1，所以要2个人一起签，才可以行使xx集团的owner权限。
+active permission的threshold=1，也授权了2个账户，bob和stacy各自账户weight=1，所以任何一个账户都可以签名以便行使xx集团的active权限。
+publish permission的threshold=2，授权了3个账户，bob和stacy各自weight=2，bob和stacy都可以用自己账户签名，行使publish权限。另外一个account weight=1，所以单独行使是不够的，必须要加上bob和stacy中的一个才行。
+
+如类似淘宝的放款，必须“买卖双方同意”或者“买卖方任意一方+第三方监管“才可以执行。threshold设置3，3个账户weight都是1，就可以达到类似效果。
