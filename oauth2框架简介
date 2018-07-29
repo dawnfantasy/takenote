@@ -1,0 +1,29 @@
+只是简单叙述用来说明概念，实际步骤和名称等肯定会不一样的。
+
+auth server认证服务器，比如google。很多服务(如各类网站)都会用它来认证，为了区别不同的服务，每个服务会被分配一个ServiceID。
+当一个服务要使用google做认证，需向google申请一个serviceID并向google提供一个回调地址，该地址反馈认证结果，如认证成功/失败结果。
+google提供一个认证调用地址auth.google.com/oauth。
+客户要认证，首先浏览器访问 auth.google.com/oauth?ServiceID=1927394（或者从服务网站点击用google登录访问该地址），google提示登录，客户输入正确的google用户名和密码，然后用户授权后，google判断后把客户forward到之前提供的那个回调callback地址（携带认证结果，比如认证成功就返回一个认证token令牌，认证失败的就返回error）。
+服务提供商拿到token后，就可以向google发请求获取用户信息，如用户名字等，发请求的时候将token带上就可以了。服务商根据被google提供的信息，转调到相应服务页面，如我的信息页面，或者重新登录页面。
+
+
+假设饭团用QQ认证
+饭团向QQ申请，要用QQ认证，并向QQ提供一个密语和回调地址(https://ft.com/qqauthcb)，密语是在后边用到，比如饭团每次向QQ发起请求都要带上密语，这样其他商家就无法仿冒饭团向QQ发起请求。
+QQ给饭团一个唯一的ServiceID，并提供一个认证服务URL(https://open.qq.com/oauth）
+客户打开饭团网页，点击QQ登录，来到QQ认证页面 https://open.qq.com/oauth?ServiceID=xxxx&MIYU=xxxxx。客户输入QQ用户名和密码并点击登录，登录成功后，客户点击授权QQ给饭团信息。
+QQ给客户返回一个转调页面，该页面会发起POST请求到https://ft.com/qqauthcb，POST数据带有一个token（假设里边内容是时间戳和数字签名）和MIYU。
+饭团收到请求后，向QQ发起请求http://open.qq.com/getUserInfo，将token/MIYU放在header里。QQ收到请求后，判断token是否合法，如合法就返回该客户QQ号和姓名等信息。
+饭团将QQ号作为登录信息，如果数据库里有该客户的QQ，客户就直接登录系统了，如果没有，那就可以进入注册页面或者直接用QQ号注册并进入业务页面。
+
+
+假设饭团用微信oauth认证。
+认证部分：
+饭团向微信申请，要用微信认证，并向微信提供回调地址(https://ft.com/wxauthcb)，和提供一个约定的secret。
+微信给饭团一个唯一的ServiceID，并提供一个认证服务URL(https://open.wx.com/oauth)
+客户笔记本电脑打开饭团网页，点击微信登录，来到微信认证页面 https://open.wx.com/oauth?ServiceID=xxxx。客户用手机微信扫描二维码并确认授权微信给饭团提供信息。
+微信给客户浏览器返回一个转调页面，该页面会发起POST请求到https://ft.com/wxauthcb，POST数据带有一个token（假设里边内容是时间戳和数字签名）。
+饭团收到请求后，向微信发起请求http://open.wx.com/access_token，内容是token和那个约定的secret，微信认证后，返回access_token给饭团。
+业务部分：
+饭团向微信发起请求http://open.wx.com/getUserInfo，将access_token放在header里。微信收到请求后，判断access_token是否合法，如合法就返回该客户微信号和姓名等信息。
+饭团将微信号作为登录信息，如果数据库里有该客户的微信号，客户就直接登录系统了，如果没有，那就可以进入注册页面或者直接用微信号注册并进入业务页面。
+
