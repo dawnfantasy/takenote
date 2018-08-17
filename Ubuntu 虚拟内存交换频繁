@@ -1,0 +1,9 @@
+有一个参数是控制‘虚拟内存’使用意愿，0是尽量不使用，100是尽量使用。
+cat /proc/sys/vm/swappiness
+Ubuntu默认是60。
+一般改成 10，内存多的可以改成0。
+
+sysctl.conf里添加
+vm.swappiness=10
+
+重启即可。
