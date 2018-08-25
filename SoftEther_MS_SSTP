@@ -1,0 +1,17 @@
+用SoftEther提供MS SSTP服务，需要符合域名的SSL证书。
+
+对了，SSTP是用443端口。
+
+I. 证书
+访问sslforfree.com
+通过DNS/FTP等方式验证好域名
+生成证书
+下载zip文件并解压。
+
+II. 设置Softether
+1. Open/MS-SSTP设置，开启MS-SSTP VPN功能
+2. 加密和网络设置里，证书里倒入之前生成好的证书。(certificate.pem和private.key)
+3. HUB里，虚拟NAT和虚拟DHCP服务器里，开启SecureNAT。（不然客户连接后会断开，因为没有获取到IP）。
+
+III. 设置Windows
+VPN里，新建新的连接，记得选择SSTP模式。
