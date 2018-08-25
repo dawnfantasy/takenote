@@ -1,0 +1,14 @@
+将 VMDK 从 thick -> thin 转换。
+
+ssh到EXSi服务器。
+
+cd /vmfs/volumes，
+然后找到相应的文件夹，进入后可看到vmdk文件。
+
+一般是2个文件，File.vmdk 和 File-flat.vmdk
+File.vmdk很小，就几K，FIle-flat.vmdk就很大。
+
+vmkfstools -d think -i File.vmdk Output.vmdk
+会产生2个文件，Output.vmdk 和 Output-flat.vmdk。
+
+将新的 Output.vmdk attach上就好了。
