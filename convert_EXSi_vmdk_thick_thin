@@ -12,3 +12,6 @@ vmkfstools -d think -i File.vmdk Output.vmdk
 会产生2个文件，Output.vmdk 和 Output-flat.vmdk。
 
 将新的 Output.vmdk attach上就好了。
+
+reference
+https://theitbros.com/convert-thick-provision-lazy-zeroed-disk-to-thin-vmware-esxi/
