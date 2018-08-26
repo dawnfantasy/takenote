@@ -15,3 +15,9 @@ II. 设置Softether
 
 III. 设置Windows
 VPN里，新建新的连接，记得选择SSTP模式。
+
+
+100% CPU 问题：
+不要同时开启 桥接 和 SecureNAT
+Linux下用TAP就可以了。
+reference https://www.bennythink.com/highload-softether.html
