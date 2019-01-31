@@ -1,0 +1,15 @@
+I mistakely set KMS for all the glacier objects. I want to get rid of it.
+So I want to restore thousands of objects (with prefixs) from GLACIER and copy to a new bucket, make them STANDARD_IA.
+
+1. S3. restore objects from glacier
+aws s3api restore-object --bucket sourcebucket --restore-request '{"Days":3,"GlacierJobParameters":{"Tier":"Bulk"}}' --key "dir1/filename.txt"
+wait for 5-12hour for bulk. (time vs cost)
+
+2. copy to another bucket
+aws s3 cp s3://sourcebucket s3://targetbucket --recursive --storage-class STANDARD_IA --force-glacier-transfer
+
+With --force-glacier-transfer, this cmd will ONLY copy RESTORED objects and issue a warning for NON-restored object. It will NOT restore object from glacier, you have to do it manually. What a misleading name!
+Without --force-glacier-transfer, this cmd will issue warnings.
+
+--force-glacier-transfer 只会处理已经恢复好的文件，不会主动恢复那些仍然属GLAICER级别的文件。非常误导人的参数！
+
