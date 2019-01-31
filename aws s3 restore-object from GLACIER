@@ -1,15 +1,26 @@
-I mistakely set KMS for all the glacier objects. I want to get rid of it.
+I mistakenly set KMS for all the glacier objects. I want to get rid of it.
 So I want to restore thousands of objects (with prefixs) from GLACIER and copy to a new bucket, make them STANDARD_IA.
+之前设置错误，所以要把所有S3里已经GLACIER的文件取出来，再重新复制到新的bucket里存成STANDARD_IA。
 
-1. S3. restore objects from glacier
-aws s3api restore-object --bucket sourcebucket --restore-request '{"Days":3,"GlacierJobParameters":{"Tier":"Bulk"}}' --key "dir1/filename.txt"
-wait for 5-12hour for bulk. (time vs cost)
+**REPLACE sourcebucket with actual bucket name in these cmds**
+记得把SOURCE_BUCKET/TARGET_BUCKET替换成对应bucket名字。
 
-2. copy to another bucket
-aws s3 cp s3://sourcebucket s3://targetbucket --recursive --storage-class STANDARD_IA --force-glacier-transfer
+1. Get the list of objects 获取文件列表
+aws s3 ls s3://SOURCE_BUCKET --recursive | perl -lane 'print +(split /\s+/g,$_,4)[3]' | tee list
+
+2. Generate cmd for restoring from GLACIER 生成命令行，解冻
+cat list | perl -lane 'print q(aws s3api restore-object --bucket SOURCE_BUCKET --restore-request ),chr(39),q({"Days":3,"GlacierJobParameters":{"Tier":"Bulk"}}),chr(39),qq( --key "$_")' | tee thaw.sh
+
+3. check and run 运行
+cat thaw.sh
+sh thaw.sh
+
+4. WAIT 5-12 hour for bulk operation. cost vs time    等（这是动词）
+
+5. copy to another bucket 复制到另外一个bucket
+aws s3 cp s3://SOURCE_BUCKET s3://TARGET_BUCKET --recursive --storage-class STANDARD_IA --force-glacier-transfer
 
 With --force-glacier-transfer, this cmd will ONLY copy RESTORED objects and issue a warning for NON-restored object. It will NOT restore object from glacier, you have to do it manually. What a misleading name!
 Without --force-glacier-transfer, this cmd will issue warnings.
-
---force-glacier-transfer 只会处理已经恢复好的文件，不会主动恢复那些仍然属GLAICER级别的文件。非常误导人的参数！
-
+这个--force-glacier-transfer参数，只会处理已经恢复好的文件，不会主动恢复(restore)文件，不用担心花费。非常误导人的参数！
+不带这个参数的话，就算你恢复了文件，复制也会出错，会告诉你文件仍然是‘GLACIER’状态，无法复制。
