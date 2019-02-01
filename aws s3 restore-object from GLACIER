@@ -24,3 +24,7 @@ With --force-glacier-transfer, this cmd will ONLY copy RESTORED objects and issu
 Without --force-glacier-transfer, this cmd will issue warnings.
 这个--force-glacier-transfer参数，只会处理已经恢复好的文件，不会主动恢复(restore)文件，不用担心花费。非常误导人的参数！
 不带这个参数的话，就算你恢复了文件，复制也会出错，会告诉你文件仍然是‘GLACIER’状态，无法复制。
+
+Reference:
+https://github.com/aws/aws-cli/issues/1699
+https://stackoverflow.com/questions/51676738/aws-s3-sync-force-glacier-transfer
